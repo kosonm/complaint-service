@@ -1,0 +1,264 @@
+{
+	"info": {
+		"_postman_id": "ba3646e1-d489-4627-8437-c2b14370a507",
+		"name": "Complaints API",
+		"description": "Kolekcja do testowania REST API zarządzania reklamacjami",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "38836918"
+	},
+	"item": [
+		{
+			"name": "Get All Complaints",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/complaints",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"complaints"
+					]
+				},
+				"description": "Pobiera wszystkie reklamacje z systemu"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Complaint By ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/complaints/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"complaints",
+						"1"
+					]
+				},
+				"description": "Pobiera szczegóły reklamacji o podanym ID"
+			},
+			"response": []
+		},
+		{
+			"name": "Create New Complaint",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "X-Forwarded-For",
+						"value": "5.9.250.100",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"productId\": \"PROD-001\",\n    \"content\": \"Produkt nie działa zgodnie z opisem. Przycisk zasilania odpadł po pierwszym użyciu.\",\n    \"reportedBy\": \"jan.kowalski@example.com\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/complaints",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"complaints"
+					]
+				},
+				"description": "Tworzy nową reklamację w systemie"
+			},
+			"response": []
+		},
+		{
+			"name": "Create Duplicate Complaint (Test Counter)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"productId\": \"PROD-001\",\n    \"content\": \"Ta treść powinna być zignorowana, ponieważ zwiększamy tylko licznik.\",\n    \"reportedBy\": \"jan.kowalski@example.com\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/complaints",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"complaints"
+					]
+				},
+				"description": "Próba dodania duplikatu reklamacji (sprawdzenie, czy licznik zostanie zwiększony)"
+			},
+			"response": []
+		},
+		{
+			"name": "Create Complaint (Different Reporter)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "X-Forwarded-For",
+						"value": "210.140.10.1",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"productId\": \"PROD-001\",\n    \"content\": \"Ten sam produkt, ale inny zgłaszający - powinna powstać nowa reklamacja.\",\n    \"reportedBy\": \"anna.nowak@example.com\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/complaints",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"complaints"
+					]
+				},
+				"description": "Dodanie reklamacji dla tego samego produktu, ale innego zgłaszającego"
+			},
+			"response": []
+		},
+		{
+			"name": "Update Complaint Content",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"content\": \"Zaktualizowana treść reklamacji z dodatkowymi szczegółami.\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/complaints/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"complaints",
+						"1"
+					]
+				},
+				"description": "Aktualizacja treści istniejącej reklamacji"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Non-Existent Complaint",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/complaints/999",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"complaints",
+						"999"
+					]
+				},
+				"description": "Próba pobrania nieistniejącej reklamacji (test obsługi błędów)"
+			},
+			"response": []
+		},
+		{
+			"name": "Create Invalid Complaint (Empty Fields)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"productId\": \"\",\n    \"content\": \"\",\n    \"reportedBy\": \"\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/complaints",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"complaints"
+					]
+				},
+				"description": "Próba utworzenia reklamacji z pustymi polami (test walidacji)"
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080",
+			"type": "string"
+		}
+	]
+}
